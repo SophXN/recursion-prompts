@@ -7,31 +7,115 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+  // Edge Cases
+  if (n < 0) {
+    return null;
+  }
+  if (n === 0) {
+    return 1;
+  }
+  // recursively call n-1 and multiply by n
+  n = n * factorial(n - 1);
+  return n;
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+  // Create a copy of the array
+  var newArray = array.slice();
+  // If it's an empty array, return 0
+  if (newArray.length === 0) {
+    return 0;
+  }
+
+  // Otherwise return the first value + sum(sliced array)
+  return array[0] + sum(newArray.slice(1));
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+    var result = 0;
+    // If the input is not an array
+    if (!Array.isArray(array)) {
+      // return the value
+      return array;
+    }
+
+    // Iterate through input array
+    array.forEach(function(item) {
+      // Invoke the recusive function and step 5 accumulate the result
+      result = result + arraySum(item);
+    });
+
+    return result;
 };
+
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  // Account for neg ints
+  n = Math.abs(n);
+  // True is even
+  if (n === 0) {
+    return true;
+  }
+  // False is odd
+  if (n === 1) {
+    return false;
+  }
+  // Decrement n by 2
+  return isEven(n-2);;
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+if (n === 0) {
+  return 0;
+}
+// Positive int
+if (n > 0) {
+  var result = n-1;
+  return result += sumBelow(n-1);
+}
+// Neg int
+if (n < 0) {
+  var result = n+1;
+  return result += sumBelow(n+1);
+}
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+  var result = [];
+
+  if (x === y) {
+    return result;
+  }
+  // If integer is smaller than ending
+  if (x < y) {
+  x = x + 1;
+    while (x < y) {
+      result.push(x);
+      range(x, y);
+      x++;
+    }
+  }
+  // If integer is larger than ending
+  if (x > y) {
+  x = x - 1;
+    while (x > y) {
+      result.push(x);
+      range(x, y);
+      x--;
+    }
+  }
+
+  return result;
 };
 
 // 7. Compute the exponent of a number.
@@ -141,6 +225,20 @@ var countValuesInObj = function(obj, value) {
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+
+for (var key in obj) {
+  if (typeof(obj[key]) == "object") {
+    replaceKeysInObj(obj[key], oldKey, newKey);
+  }
+
+  if (obj[oldKey]) {
+    console.log('swapped: ' + obj[oldKey] + ' for new key! ' + newKey);
+    obj[newKey] = obj[oldKey];
+    delete obj[oldKey];
+  }
+}
+return obj;
+
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
